@@ -1,0 +1,16 @@
+const {test}=require('node:test');
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const source=fs.readFileSync(path.join(__dirname,'..','clash-chain.js'),'utf8');
+function fixture(){return {proxies:[{name:'Entry A',type:'ss',server:'entry.example.org',port:443,cipher:'aes-128-gcm',password:'example-only'}],'proxy-groups':[{name:'默认节点',type:'select',proxies:['Entry A','DIRECT']}],rules:['MATCH,默认节点'],dns:{enable:true},tun:{enable:false}};}
+function run(input=fixture(),{enabled=true,domains=[]}={}){const configured=source.replace('server: "__RESIDENTIAL_SERVER__"','server: "exit.example.org"').replace('port: 0,','port: 1080,').replace('username: "__RESIDENTIAL_USERNAME__"','username: "example-user"').replace('password: "__RESIDENTIAL_PASSWORD__"','password: "example-password"').replace('enabled: true,','enabled: '+enabled+',').replace('customDirectDomains: []','customDirectDomains: '+JSON.stringify(domains));const context=vm.createContext({input});return JSON.parse(JSON.stringify(vm.runInContext(configured+'\nmain(input)',context,{timeout:2000})));}
+test('unconfigured public template fails clearly',()=>{assert.throws(()=>vm.runInNewContext(source+'\nmain(input)',{input:fixture()}),/请填写顶部 residential/)});
+test('chain uses entry group, preserves DNS/TUN and does not mutate input',()=>{const input=fixture(),copy=JSON.stringify(input),o=run(input);assert.equal(JSON.stringify(input),copy);const exit=o.proxies.find(p=>p.type==='socks5');assert.equal(exit['dialer-proxy'],'🔗 前置节点 (自动优选)');assert.equal(exit.udp,false);assert.deepEqual(o.dns,input.dns);assert.deepEqual(o.tun,input.tun);assert(!o['proxy-groups'].find(g=>g.name==='默认节点').proxies.includes('DIRECT'));assert(o.rules.includes('PROCESS-NAME,WeChat,DIRECT'));assert.equal(o.rules.at(-1),'MATCH,默认节点');});
+test('optional direct domains are first, deduplicated; bad inputs rejected',()=>{const o=run(fixture(),{domains:['example.org','example.org']});assert.equal(o.rules[0],'DOMAIN-SUFFIX,example.org,DIRECT');assert.equal(o.rules.filter(r=>r==='DOMAIN-SUFFIX,example.org,DIRECT').length,1);for(const d of ['https://example.org','example.org,DIRECT','*.example.org','example.org\n'])assert.throws(()=>run(fixture(),{domains:[d]}),/customDirectDomains/);});
+test('upstream-only mode omits residential exit',()=>{assert(!run(fixture(),{enabled:false}).proxies.some(p=>p.type==='socks5'));});
+test('repeated execution remains stable',()=>{const a=run();assert.deepEqual(run(a),a);});
+test('cycle rejected',()=>{const i=fixture();i['proxy-groups'].push({name:'Loop',type:'select',proxies:['Loop']});assert.throws(()=>run(i),/递归/);});
+test('dynamic-only primary path rejected',()=>{const i=fixture();i.proxies=[];i['proxy-providers']={remote:{type:'http',url:'https://example.org/sub'}};i['proxy-groups'][0]={name:'默认节点',type:'select',use:['remote']};assert.throws(()=>run(i),/普通前置节点/);});
+test('inline provider supported',()=>{const i=fixture();const p=i.proxies[0];i.proxies=[];i['proxy-providers']={local:{type:'inline',payload:[p]}};i['proxy-groups'][0]={name:'默认节点',type:'select',use:['local']};const o=run(i);assert.deepEqual(o['proxy-groups'].find(g=>g.name==='🔗 前置节点 (自动优选)').use,['local']);});
