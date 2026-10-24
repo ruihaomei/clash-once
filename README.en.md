@@ -27,17 +27,34 @@ For **Clash Verge Rev + Mihomo**. Select the residential chain in the main group
 
 Requirements: a working upstream subscription and a username/password SOCKS5 exit; Mihomo ≥ 1.19.31 recommended. No proxy service is included. The main path supports regular `proxies` or auditable `inline` providers; HTTP/file-only provider paths are rejected.
 
-1. Back up your current script/config. Open the global extension script editor under Subscriptions in Clash Verge Rev and paste all of [clash-chain.js](clash-chain.js). Labels may vary by version.
-2. **Fill in four fields at the top**, leaving other defaults unchanged:
+### ① Open the script editor
 
-   ```js
-   server: "__RESIDENTIAL_SERVER__",     // Provider hostname/IP; no socks5:// prefix
-   port: 0,                              // Provider port; number, no quotes
-   username: "__RESIDENTIAL_USERNAME__", // Provider username
-   password: "__RESIDENTIAL_PASSWORD__", // Provider password
-   ```
+Back up your current script/config. In Clash Verge Rev, go to **Subscriptions → Global Extension Script → Edit File** (`订阅 → 全局扩展脚本 → 编辑文件`). Labels may vary by version.
 
-3. Save/apply and enable **Rule mode**. In the selected main group (usually `默认节点`), **select `🏠 静态住宅 IP - 链式` once**. `🔗 前置节点 (自动优选)` manages the entry. Selecting an ordinary node or the entry group bypasses the residential exit.
+![Step 1: Open Edit File for the global extension script on the Subscriptions page](docs/images/step-1-open-script.png)
+
+### ② Paste the script, enter your exit details, and save
+
+Select all existing content in the editor and replace it with the complete [clash-chain.js](clash-chain.js). **Fill in the four fields at the top: server, port, username, and password**, then click **Save** (`保存`).
+
+```js
+server: "__RESIDENTIAL_SERVER__",     // Provider hostname/IP; no socks5:// prefix
+port: 0,                              // Provider port; number, no quotes
+username: "__RESIDENTIAL_USERNAME__", // Provider username
+password: "__RESIDENTIAL_PASSWORD__", // Provider password
+```
+
+![Step 2: Replace the entire script, enter your own exit details, and save](docs/images/step-2-paste-and-save.png)
+
+### ③ Keep Rule mode on and select the residential chain
+
+Open **Proxies** (`代理`) and keep **Rule mode** (`规则`) on. In the selected main group (usually `默认节点`), **select `🏠 静态住宅 IP - 链式` once** to finish setup.
+
+`🔗 前置节点 (自动优选)` manages the entry. Selecting an ordinary node or the entry group bypasses the residential exit.
+
+![Step 3: Keep Rule mode on and select the residential chain in the main group](docs/images/step-3-rule-and-select.png)
+
+> The screenshots show where to click, with private details obscured. Use the script from this repository and enter your own exit details.
 
 Verify the exit IP using a site that matches a proxy rule, then check its connection chain. Keep Rule mode on after verification. Enable system proxy/TUN separately as needed: the script does not enable interception, and traffic outside Clash is unaffected.
 
