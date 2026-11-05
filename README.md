@@ -8,7 +8,7 @@
 
 *Configure once. Less to manage.*
 
-[获取脚本](clash-chain.js) · [下载发布包](https://github.com/ruihaomei/clash-once/releases/latest) · [三步上手](#三步上手)
+[获取最新脚本](clash-chain.js) · [旧版发布包 v1.0.0](https://github.com/ruihaomei/clash-once/releases/tag/v1.0.0) · [三步上手](#三步上手)
 
 适用于 **Clash Verge Rev + Mihomo**。首次应用后，在主选择组中选中住宅链式出口；此后由自动入口优选与分流规则处理日常流量。
 
@@ -57,6 +57,18 @@ password: "__RESIDENTIAL_PASSWORD__", // 换成密码
 > 图片为操作位置示意，已做隐私遮挡；代码内容请以本仓库脚本为准，出口信息填写你自己的。
 
 用应走代理的网站检查出口 IP，再检查连接列表的实际代理链；验证后即可保持规则模式日常使用。系统代理/TUN 是否启用由你自行决定，脚本不会替你开启；未被 Clash 接管的流量不受这些规则控制。
+
+### 配好后测试
+
+保存并重新应用最新脚本，保持规则模式并选中住宅链式出口，然后打开以下网站：
+
+- [IPinfo](https://ipinfo.io/what-is-my-ip)：查看出口 IP 和归属地，核对是否与服务商提供的出口一致。
+- [BrowserLeaks IP](https://browserleaks.com/ip)：再用一个网站核对出口 IP；如不一致，可在 Clash 连接列表检查命中规则和代理链。
+- [BrowserLeaks WebRTC](https://browserleaks.com/webrtc)：检查浏览器是否通过 WebRTC 暴露了不希望公开的公网 IP。未显示 WebRTC IP 不一定是故障。
+- [WHOER](https://whoer.com/zh/)：查看 IP、DNS 和浏览器环境，帮助发现可能的 DNS 泄漏或信息不一致。
+- [Net.Coffee Claude IP 检测](https://ip.net.coffee/claude/)：查看 Claude 相关的出口 IP 和风险信息，供排查访问问题时参考。
+
+不同网站可能走不同规则，IP 归属地和风险评分也只是参考，不保证服务可用或隐私安全。BrowserLeaks 已加入代理兜底规则；如结果异常，检查 Clash 的生效配置中 `smart-cn-v1-safety` 的 `payload` 是否包含 `+.browserleaks.com`，并确认没有将该域名加入自定义直连。
 
 ## 亮点与边界
 

@@ -8,7 +8,7 @@ Proxy chaining, automatic entry selection, and routing for China and the rest of
 
 *配一次，少操心。*
 
-[Get the script](clash-chain.js) · [Download the release](https://github.com/ruihaomei/clash-once/releases/latest) · [Get started](#get-started-in-three-steps)
+[Get the latest script](clash-chain.js) · [Older release v1.0.0](https://github.com/ruihaomei/clash-once/releases/tag/v1.0.0) · [Get started](#get-started-in-three-steps)
 
 For **Clash Verge Rev + Mihomo**. Select the residential chain in the main group after the first setup; automatic entry selection and routing rules handle everyday traffic from there.
 
@@ -57,6 +57,18 @@ Open **Proxies** (`代理`) and keep **Rule mode** (`规则`) on. In the selecte
 > The screenshots show where to click, with private details obscured. Use the script from this repository and enter your own exit details.
 
 Verify the exit IP using a site that matches a proxy rule, then check its connection chain. Keep Rule mode on after verification. Enable system proxy/TUN separately as needed: the script does not enable interception, and traffic outside Clash is unaffected.
+
+### Test your setup
+
+Save and reapply the latest script, keep Rule mode on, and select the residential chain. Then try these sites:
+
+- [IPinfo](https://ipinfo.io/what-is-my-ip): Check the exit IP and location against the details from your provider.
+- [BrowserLeaks IP](https://browserleaks.com/ip): Cross-check the exit IP. If it differs, inspect the matched rule and proxy chain in Clash's connections list.
+- [BrowserLeaks WebRTC](https://browserleaks.com/webrtc): Check whether your browser exposes an unintended public IP through WebRTC. No WebRTC IP shown is not necessarily a problem.
+- [WHOER](https://whoer.com/zh/): Review IP, DNS and browser details to spot possible DNS leaks or inconsistencies.
+- [Net.Coffee Claude IP check](https://ip.net.coffee/claude/): Check the Claude-related exit IP and risk information when troubleshooting access.
+
+Sites may follow different routing rules. IP locations and risk scores are estimates, not guarantees of service availability or privacy. BrowserLeaks is included in the proxy safety rules; if its result is unexpected, check that `+.browserleaks.com` appears in `smart-cn-v1-safety` → `payload` in the effective Clash configuration and that the domain is not in your custom direct list.
 
 ## Features and limits
 

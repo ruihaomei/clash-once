@@ -42,6 +42,7 @@ const HOME_NAME = /静态住宅|住宅.*链式|residential.*chain/i;
 // 小型内置安全网：远程 AI/proxy 规则首次下载失败时，核心服务仍有明确保护。
 // 来源：上游 ai-domain / proxy-domain 与 MetaCubeX category-ai-!cn；大规则仍在线更新。
 const SAFETY_DOMAINS = [
+  "+.browserleaks.com", // Prevent incorrect direct routing by CN rule sets
   "+.openai.com", "+.chatgpt.com", "+.oaistatic.com", "+.oaiusercontent.com",
   "+.anthropic.com", "+.claude.ai", "+.claude.com", "+.perplexity.ai", "+.pplx.ai",
   "+.x.ai", "+.grok.com", "+.grokusercontent.com", "+.grokipedia.com",
