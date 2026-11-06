@@ -48,7 +48,9 @@ password: "__RESIDENTIAL_PASSWORD__", // Provider password
 
 ### ③ Keep Rule mode on and select the residential chain
 
-Open **Proxies** (`代理`) and keep **Rule mode** (`规则`) on. In the selected main group (usually `默认节点`), **select `🏠 静态住宅 IP - 链式` once** to finish setup.
+Open **Proxies** (`代理`) and keep **Rule mode** (`规则`) on. In the selected main group (usually `默认节点`), **select `🏠 静态住宅 IP - 链式` once**. It is usually near the bottom of the group's list, so scroll down if needed.
+
+Then enable **TUN mode (virtual network adapter)** in Clash Verge Rev so more apps can send their traffic through Clash. The script does not turn TUN on automatically; see the [official quick start](https://www.clashverge.dev/guide/quickstart.html) if you need help.
 
 `🔗 前置节点 (自动优选)` manages the entry. Selecting an ordinary node or the entry group bypasses the residential exit.
 
@@ -56,11 +58,11 @@ Open **Proxies** (`代理`) and keep **Rule mode** (`规则`) on. In the selecte
 
 > The screenshots show where to click, with private details obscured. Use the script from this repository and enter your own exit details.
 
-Verify the exit IP using a site that matches a proxy rule, then check its connection chain. Keep Rule mode on after verification. Enable system proxy/TUN separately as needed: the script does not enable interception, and traffic outside Clash is unaffected.
+Verify the exit IP using a site that matches a proxy rule, then check its connection chain. Keep Rule mode on after verification. Traffic outside Clash is unaffected by these rules.
 
 ### Test your setup
 
-Save and reapply the latest script, keep Rule mode on, and select the residential chain. Then try these sites:
+Save and reapply the latest script, enable TUN, keep Rule mode on, and select the residential chain. Then try these sites:
 
 - [IPinfo](https://ipinfo.io/what-is-my-ip): Check the exit IP and location against the details from your provider.
 - [BrowserLeaks IP](https://browserleaks.com/ip): Cross-check the exit IP. If it differs, inspect the matched rule and proxy chain in Clash's connections list.
