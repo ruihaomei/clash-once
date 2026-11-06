@@ -12,6 +12,12 @@ Proxy chaining, automatic entry selection, and routing for China and the rest of
 
 For **Clash Verge Rev + Mihomo**. Select the residential chain in the main group after the first setup; automatic entry selection and routing rules handle everyday traffic from there.
 
+## Choose a mode
+
+**New here or unsure? Follow the three-step setup below for Standard mode.** It takes less setup and automatically selects an entry from your active subscription. Switch subscriptions in the app when needed.
+
+If you switch subscriptions often, see the optional [Advanced multi-subscription menu](advanced/README.en.md). Both modes use the same kind of SOCKS5 chain and routing rules. Advanced mode uses local subscription snapshots and may consume more health-check traffic.
+
 ## What it solves
 
 | Friction | What the script provides |
